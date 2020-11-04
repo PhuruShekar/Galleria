@@ -1,9 +1,17 @@
 import React from 'react';
+import Upload from './Upload';
 
-const Navbar = () => {
-  return (
-    <div>Navbar</div>
-  );
+class Navbar extends React.Component {
+
+
+  
+  render() {
+    return (
+    <div>
+      <Upload />
+    </div> 
+    );
+  }
 };
 
 export default Navbar;

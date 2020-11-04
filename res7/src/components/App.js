@@ -2,22 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import aws from '../apis/aws';
 import ImageList from './ImageList';
+import Navbar from './Navbar';
 
 class App extends React.Component{
-  state = { images: []};
+  state = { images: [], itemNames: []};
 
-
-  //take XML data and make them into objects containing the item Name + date created
-  //json obj has: key: img name, url: bucketURL+key, date: lastmodified, size: size of img
-  parseXMLtoJSON = (xmlData) => {
-
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlData, "text/xml");
-    
-    var arrItems = [...xmlDoc.getElementsByTagName("Contents")];
-    console.log(arrItems);
-
-    for(let i=0;i<arrItems.length;i++){
+/*
+for(let i=0;i<arrItems.length;i++){
       this.setState({ images: [...this.state.images,{
         key: arrItems[i].children[0].textContent,
         date: arrItems[i].children[1].textContent,
@@ -25,10 +16,58 @@ class App extends React.Component{
         url: `https://res7ps-resized.s3.us-east-1.amazonaws.com/${arrItems[i].children[0].textContent}`,
       }]});
     }
+     */
+  //take XML data of image list and get images
+  getImagesFromXML = (xmlData) => {
 
-  
-    console.log(this.state.images);
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+    
+    [...xmlDoc.getElementsByTagName("Key")].forEach(item =>{
+        this.fetchImage(item.textContent);
+    });
+ 
   };
+
+  //add image to state after making fetch request
+  fetchImage = (imageName) => {
+   
+    //add image names to state to get later
+    this.setState({itemNames: [...this.state.itemNames,imageName]});
+   
+    aws.get("/fetch", {
+      params: {
+        img: imageName
+      }
+    })
+    .then( prsURL => {
+      axios.get(`${prsURL.data}`)
+      .then( (obj) => {
+        this.loadImage(obj);
+      })
+    })
+  }
+
+  loadImage = (picData) => {
+    
+    var findKey = "";
+
+    for(let item of this.state.itemNames){
+        if(picData.config.url.includes(item)){
+          findKey = item;
+        }
+    }
+
+
+    this.setState({images: [...this.state.images,{
+      key: findKey,
+      url: picData.config.url,
+      date: picData.headers["last-modified"],
+      size: picData.headers["content-length"]
+    }]});
+   
+  }
+
 
 
   componentDidMount() {
@@ -36,7 +75,7 @@ class App extends React.Component{
     .then(res => {
      axios.get(`${res.data}`)
      .then( obj => {
-      this.parseXMLtoJSON(obj.data);
+      this.getImagesFromXML(obj.data);
       //console.log(obj.data);
     })
     })
@@ -48,6 +87,7 @@ class App extends React.Component{
   render() {
     return(
       <div className="ui container" style={{marginTop:'10px'}}>
+        <Navbar />
         <ImageList images={this.state.images}/>
       </div>
     )
