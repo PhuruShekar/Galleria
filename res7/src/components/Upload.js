@@ -19,7 +19,6 @@ class Upload extends React.Component {
 
     // when file is ready to be uploaded, upload it
     onFileUpload = () => { 
-      this.updateImageStatus();
       try{
       this.uploadImage(this.state.selectedFile);
       }
@@ -43,6 +42,7 @@ class Upload extends React.Component {
       
       //set up object to send to AWS S3 bucket
       .then(url => {
+        this.updateImageStatus();
         var config = {
           method: 'put',
           url: url.data,
@@ -94,7 +94,7 @@ class Upload extends React.Component {
     //console.log("upload props: ",this.props);
     return (
       <div className="right floated column"> 
-        <input className="ui inverted orange" type="file" accept={acceptTypes} onChange={this.onFileChange} /> 
+        <input className="ui inverted tan" type="file" accept={acceptTypes} onChange={this.onFileChange} /> 
           <button className= "ui inverted button orange" onClick={this.onFileUpload}> 
             Upload 
           </button> 

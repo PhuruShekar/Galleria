@@ -42,7 +42,7 @@ const StatusModal = (props) => {
 
       <Loader 
             type="Grid"
-            color="orange"
+            color="#ff851b"
             height={80}
             width={80}
             className= "ui load-align"
