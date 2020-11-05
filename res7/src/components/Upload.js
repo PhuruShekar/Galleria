@@ -40,6 +40,11 @@ class Upload extends React.Component {
         axios(config)
         .then(result => {
           console.log("image upload:", result);
+
+          if(result.status === 200){
+            setTimeout(this.tryFetchThumb(), 2000);
+          } 
+
         })
         .catch(error =>{
           console.log("Error image upload:",error);
@@ -47,12 +52,18 @@ class Upload extends React.Component {
         
       })
       .catch(error => console.log("Error get Presigned URL:", error));
+
+      
     };
 
+   tryFetchThumb = () => {
+      this.props.onUpload(`resized-${this.state.selectedFile.name}`);
+   };
 
   render() {
     //accept only these image types
     const acceptTypes = ".jpg, .png, .jpeg, .gif, .bmp";
+    //console.log("upload props: ",this.props);
     return (
       <div> 
         <input type="file" accept={acceptTypes} onChange={this.onFileChange} /> 

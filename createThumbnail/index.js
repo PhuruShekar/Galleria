@@ -41,23 +41,33 @@ exports.handler = async (event, context, callback) => {
             Key: srcKey
         };
         var origimage = await s3.getObject(params).promise();
-
+        console.log("got img:",origimage);
     } catch (error) {
-        console.log(error);
+        console.log("Error downloading image:",error);
         return;
     }  
 
-    // set thumbnail width. Resize will set the height automatically to maintain aspect ratio.
+    // set thumbnail width, height will be autoset to maintain resolution.
     const width  = 250;
 
-    // Use the Sharp module to resize the image and save in a buffer.
+    // Use the Sharp module to resize image, use as Stream for big images, no input pixel limit
     try { 
-        var buffer = await sharp(origimage.Body).resize(width).toBuffer();
-            
+        var buffer = await sharp(origimage.Body, { limitInputPixels: false}).resize(width).toBuffer();
+          console.log("buffer", buffer);
     } catch (error) {
-        console.log(error);
+        console.log("Buffer error:",error);
         return;
     } 
+
+
+   /* try {
+      const imageBuf = Buffer.from(origimage
+
+      )
+    } catch (error) {
+      console.log(error);
+      return;
+    }*/
 
     // Upload the thumbnail image to the destination bucket
     try {
@@ -71,7 +81,7 @@ exports.handler = async (event, context, callback) => {
         const putResult = await s3.putObject(destparams).promise(); 
         
     } catch (error) {
-        console.log(error);
+        console.log("Error uploading:",error);
         return;
     } 
         

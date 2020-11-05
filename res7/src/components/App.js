@@ -24,14 +24,29 @@ for(let i=0;i<arrItems.length;i++){
     const xmlDoc = parser.parseFromString(xmlData, "text/xml");
     
     [...xmlDoc.getElementsByTagName("Key")].forEach(item =>{
-        this.fetchImage(item.textContent);
+        this.fetchImageURL(item.textContent);
     });
  
   };
+  
+  //get image from presigned URL
+  fetchImage = (presignedURL) => {
+    console.log("u",presignedURL)
+    
+    axios.get(`${presignedURL}`)
+    .then( (obj) => {
+      this.loadImage(obj);
+    })
+    .catch(err => {
+      setTimeout(this.fetchImage(presignedURL), 1000);
+      console.log("error fetching image:", err);
+    })
+  };
 
-  //add image to state after making fetch request
-  fetchImage = (imageName) => {
-   
+
+  //get presigned URL
+  fetchImageURL = (imageName) => {
+    console.log("fetch image: ", imageName)
     //add image names to state to get later
     this.setState({itemNames: [...this.state.itemNames,imageName]});
    
@@ -41,10 +56,10 @@ for(let i=0;i<arrItems.length;i++){
       }
     })
     .then( prsURL => {
-      axios.get(`${prsURL.data}`)
-      .then( (obj) => {
-        this.loadImage(obj);
-      })
+      this.fetchImage(prsURL.data);
+    })
+    .catch(error => {
+      console.log("Error making Presigned URL to fetch: ",error);
     })
   }
 
@@ -58,7 +73,6 @@ for(let i=0;i<arrItems.length;i++){
         }
     }
 
-
     this.setState({images: [...this.state.images,{
       key: findKey,
       url: picData.config.url,
@@ -66,28 +80,38 @@ for(let i=0;i<arrItems.length;i++){
       size: picData.headers["content-length"]
     }]});
    
-  }
+  };
 
 
-
-  componentDidMount() {
+  getImageList = () => {
     aws.get("/getImages")
     .then(res => {
      axios.get(`${res.data}`)
      .then( obj => {
-      this.getImagesFromXML(obj.data);
+        this.getImagesFromXML(obj.data);
       //console.log(obj.data);
+      })
     })
-    })
-    
+  };
+
+  onUpload = (e) => {
+    console.log(e);
+    try{
+    this.fetchImageURL(e)
+    } catch(error) {
+      console.log("fetchImage Upload err:", error);
+    }
   }
 
-
+  componentDidMount() {
+    this.getImageList();
+  };
+  
 
   render() {
     return(
       <div className="ui container" style={{marginTop:'10px'}}>
-        <Navbar />
+        <Navbar onUpload={this.onUpload} />
         <ImageList images={this.state.images}/>
       </div>
     )
