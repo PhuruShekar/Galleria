@@ -31,12 +31,21 @@ Tech Stack:
   
   1. Download repository
   1. Navigate to the res7 directory within the res7 directory.
-  1. run `npm install` (in the terminal) in the directory to install all node dependencies
-  1. run `npm start` to start project
+  1. run (in the terminal) in the directory to install all node dependencies
+  ```bash
+  npm install
+  ``` 
+  1. run following command once all dependencies have been installed
+  ```bash
+  npm start
+  ``` 
+
   1. enjoy!
-  
+ 
   
   ### How to Use the Project
+  
+  ![](demo_gif.gif)
   
   Initally if any images are loaded, they are pulled from an S3 bucket that contains thumbnails of 250px width.
   
