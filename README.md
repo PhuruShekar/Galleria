@@ -29,18 +29,17 @@ Tech Stack:
   
   ### How to Run it
   
-  1. Download repository
-  1. Navigate to the res7 directory within the res7 directory.
-  1. run (in the terminal) in the directory to install all node dependencies
+  Download this repository
+  Navigate to the res7 directory within the repository.
+  Run (in the terminal) in the directory to install all node dependencies
   ```bash
   npm install
   ``` 
-  1. run following command once all dependencies have been installed
+  Run following command once all dependencies have been installed
   ```bash
   npm start
   ``` 
-
-  1. enjoy!
+Enjoy!
  
   
   ### How to Use the Project
@@ -59,5 +58,8 @@ Tech Stack:
   1. Allow images to be sorted
   1. Clean up Upload Image Button
   1. Make errors more clear to the User (so they don't have to check console.log)
+  1. Move thumbnail generator script to local instead of having a lambda function
+  1. Make the app responsive for mobile
+  1. Make the lamba functions more robust
   
   
