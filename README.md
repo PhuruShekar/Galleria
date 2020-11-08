@@ -1,4 +1,4 @@
-# res7
+# Galleria
 
 Simple image gallery created to upload an image and generate a thumbnail that is immediately rendered on screen. 
 
