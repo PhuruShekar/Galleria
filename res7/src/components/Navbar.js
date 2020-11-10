@@ -14,7 +14,7 @@ class Navbar extends React.Component {
     <div className = "ui menu grid inverted">
       <div className="three column row header item">
         <Header as='h3' className="tan floated right column">
-          Resonate.img
+          Galleria
         </Header>
 
         <Upload onUpload={this.props.onUpload} whenFileUpload ={this.props.whenFileUpload} />
