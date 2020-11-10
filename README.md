@@ -4,9 +4,11 @@ Simple image gallery created to upload an image and generate a thumbnail that is
 
 ## Contents:
 
-- The createThumbnail directory contains the lambda function to generate a thumbnail for an image that is uploaded by the user.
+- The lambda_functions directory contains the various AWS lambda functions used and set up on AWS
 
 - Designs directory with some AdobeXD sketches of how I was planning to design the application
+
+- sample_images contains some sample images of various sizes to help test the application
 
 - res7 contains the code for the front end portion
 
