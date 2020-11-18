@@ -105,7 +105,7 @@ class App extends React.Component{
 
   //callback function, lets us get image thumbnail of what we just uploaded
   onUpload = (e) => {
-    //console.log(e);
+    console.log(e);
     try{
       //sets modal message to creating thumbnail
       this.updateImageStatus('Creating Thumbnail from Image')

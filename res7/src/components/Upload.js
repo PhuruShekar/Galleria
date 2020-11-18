@@ -13,26 +13,32 @@ class Upload extends React.Component {
 
     //change state when file is changed
     onFileChange = (event) => { 
-      this.setState({ selectedFile: event.target.files[0] }); 
+      console.log(event);
+      this.setState({ selectedFile: [event.target.files] }); 
       this.setState({file: event});
     }; 
 
     // when file is ready to be uploaded, upload it
     onFileUpload = () => { 
+
+      let i=0;
+      for(i = 0;i< this.state.selectedFile[0].length; i++){
+      console.log("ye", this.state.selectedFile[0][i]);
       try{
-      this.uploadImage(this.state.selectedFile);
+      this.uploadImage(this.state.selectedFile[0][i],i);
       }
       catch(error) {
         console.log("No image selected",error);
 
       }
+    }
     }; 
 
 
     //function with multiple axios requests to get Presigned URL
     //and then Upload the image to the S3 bucket
-    uploadImage = (imageData) => {
-
+    uploadImage = (imageData, numFile) => {
+      console.log("UPLOADING: ", imageData)
       //get presignedURL for image name
       aws.get("/createPresignedURL", {
         params: {
@@ -43,7 +49,7 @@ class Upload extends React.Component {
       //set up object to send to AWS S3 bucket
       .then(url => {
         this.updateImageStatus();
-        var config = {
+        var config = {  
           method: 'put',
           url: url.data,
           headers: {
@@ -55,11 +61,11 @@ class Upload extends React.Component {
         //make axios call to put image to bucket
         axios(config)
         .then(result => {
-          //console.log("image upload:", result);
+          console.log("image upload:", result);
 
           //when the image is a success, try to fetch thumbnail
           if(result.status === 200){
-            setTimeout(this.tryFetchThumb(), 2000);
+            setTimeout(this.tryFetchThumb(numFile), 2000);
           } 
         })
         .catch(error =>{
@@ -74,12 +80,12 @@ class Upload extends React.Component {
 
     //trying to fetch uploaded image thumbnail
     //send back new image name to get thumbnail of from resized bucket
-   tryFetchThumb = () => {
-      this.props.onUpload(`resized-${this.state.selectedFile.name}`);
-      this.setState({selectedFile: null});
+   tryFetchThumb = (numFile) => {
+      this.props.onUpload(`resized-${this.state.selectedFile[0][numFile].name}`);
+      /*this.setState({selectedFile: null});
       let fileEvent = this.state.file;
       fileEvent.target.value = null;
-      this.setState({file: null});
+      this.setState({file: null});*/
    };
    
    //update image status on Modal as image is being uploaded
@@ -94,7 +100,7 @@ class Upload extends React.Component {
     //console.log("upload props: ",this.props);
     return (
       <div className="right floated column"> 
-        <input className="ui inverted tan" type="file" accept={acceptTypes} onChange={this.onFileChange} /> 
+        <input className="ui inverted tan-c" type="file"  multiple accept={acceptTypes} onChange={this.onFileChange} /> 
           <button className= "ui inverted button orange" onClick={this.onFileUpload}> 
             Upload 
           </button> 

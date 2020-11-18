@@ -9,11 +9,11 @@ class Navbar extends React.Component {
 
   render() {
 
-    console.log("navbar props",this.props);
+    //console.log("navbar props",this.props);
     return (
     <div className = "ui menu grid inverted">
       <div className="three column row header item">
-        <Header as='h3' className="tan floated right column">
+        <Header as='h3' className="tan-c floated right column">
           Galleria
         </Header>
 

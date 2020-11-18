@@ -34,7 +34,7 @@ const StatusModal = (props) => {
     size='mini'
   >
     <Header icon>
-      <Icon name='image outline' color="tan" />
+      <Icon name='image outline' className="tan-c" />
       Image Upload Status
     </Header>
     <Modal.Content className="ui container center aligned">
