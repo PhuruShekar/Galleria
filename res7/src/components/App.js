@@ -11,7 +11,7 @@ class App extends React.Component{
   //images: stores list of images and their metadata
   //itemNames: has list of image names to retrieve
   //currStatus: string with status of image as it is being uploaded
-  state = { images: [], itemNames: [], currStatus:''};
+  state = { images: [], itemNames: [], currStatus:[]};
 
   //take XML data of image list and get image data
   getImagesFromXML = (xmlData) => {
@@ -86,7 +86,7 @@ class App extends React.Component{
     }]});
    
     //reset current status to null as thumbnail is now displayed
-    this.setState({currStatus: ''});
+    this.updateImageStatus();
 
   };
 
@@ -105,10 +105,10 @@ class App extends React.Component{
 
   //callback function, lets us get image thumbnail of what we just uploaded
   onUpload = (e) => {
-    console.log(e);
+    //console.log(e);
     try{
       //sets modal message to creating thumbnail
-      this.updateImageStatus('Creating Thumbnail from Image')
+      this.updateImageStatus(`Creating a Thumbnail of ${e}`);
 
       this.fetchImageURL(e);
     } catch(error) {
@@ -123,7 +123,8 @@ class App extends React.Component{
   
   //update image status
   updateImageStatus = (newStatus) => {
-    this.setState({currStatus: newStatus });
+    if(newStatus)
+    this.setState({currStatus: [...this.state.currStatus,newStatus] });
   }
 
   render() {

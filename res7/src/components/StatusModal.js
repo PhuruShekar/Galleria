@@ -14,7 +14,8 @@ const StatusModal = (props) => {
 
   //UseEffect automatically opens/closes modal if it has a message so user doesn't have to close it if they dont want to
   useEffect(() => {
-    if(props.currStatus === ''){
+    console.log("prop stat", props.currStatus);
+    if(!Array.isArray(props.currStatus) || !props.currStatus.length || props.currStatus.length === 0){
       setOpen(false);
     } else {
       setOpen(true);
@@ -38,7 +39,12 @@ const StatusModal = (props) => {
       Image Upload Status
     </Header>
     <Modal.Content className="ui container center aligned">
-      <Modal.Header className="ui centered message-color">{props.currStatus}</Modal.Header>
+      {props.currStatus.map(status => (
+        <Modal.Header className="ui centered message-color">
+          {status}
+        </Modal.Header>
+      ))}
+      
 
       <Loader 
             type="Grid"

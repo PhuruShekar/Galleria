@@ -25,7 +25,7 @@ class ImageCard extends React.Component {
     const { key, url } = this.props.image;
     return (
       <div style={{ gridRowEnd: `span ${this.state.spans}` }}>
-        <img ref={this.imageRef} alt={key} src={url} />
+        <img ref={this.imageRef} alt={key} key={key} src={url} />
       </div>
     );
   }

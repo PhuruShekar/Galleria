@@ -48,7 +48,7 @@ class Upload extends React.Component {
       
       //set up object to send to AWS S3 bucket
       .then(url => {
-        this.updateImageStatus();
+        this.updateImageStatus(imageData.name);
         var config = {  
           method: 'put',
           url: url.data,
@@ -89,9 +89,9 @@ class Upload extends React.Component {
    };
    
    //update image status on Modal as image is being uploaded
-   updateImageStatus = () => {
+   updateImageStatus = (fileName) => {
      //console.log("callback Upload image");
-     this.props.whenFileUpload('Uploading Image to Server');
+     this.props.whenFileUpload(`Uploading ${fileName} to server`);
    }
    
   render() {
