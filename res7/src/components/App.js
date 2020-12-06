@@ -108,7 +108,7 @@ class App extends React.Component{
     //console.log(e);
     try{
       //sets modal message to creating thumbnail
-      this.updateImageStatus(`Creating a Thumbnail of ${e}`);
+      this.updateImageStatus({"item":e, "status":"Creating Thumbail"});
 
       this.fetchImageURL(e);
     } catch(error) {
@@ -122,10 +122,29 @@ class App extends React.Component{
   };
   
   //update image status
+  //now it checks for previous image "ie: dice vs resized-dice" and updates that object so modal now can support multiple uploads
   updateImageStatus = (newStatus) => {
-    if(newStatus)
-    this.setState({currStatus: [...this.state.currStatus,newStatus] });
-  }
+    if(newStatus){
+      let tempStat = {"item":newStatus.item, "status":newStatus.status};
+      if(newStatus.item.startsWith("resized-")){
+       tempStat =  {"item":newStatus.item.slice(8), "status":newStatus.status};
+      }
+      console.log("Resize?: ", tempStat.item);
+      var index = this.state.currStatus.findIndex(x => x.item.localeCompare(newStatus.item));
+      console.log("index:",index);
+      if(index !== -1){
+        this.setState({currStatus: [
+          ...this.state.currStatus.slice(0,index),
+          Object.assign({}, this.state.currStatus[index], tempStat),
+          ...this.state.currStatus.slice(index+1)
+        ]
+      });
+      } else {
+        this.setState({currStatus: [...this.state.currStatus,tempStat] });
+      }
+ 
+    }
+  };
 
   render() {
     return(

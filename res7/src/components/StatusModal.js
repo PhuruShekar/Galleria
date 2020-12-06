@@ -41,7 +41,7 @@ const StatusModal = (props) => {
     <Modal.Content className="ui container center aligned">
       {props.currStatus.map(status => (
         <Modal.Header className="ui centered message-color">
-          {status}
+          {`${status.item}: ${status.status}`}
         </Modal.Header>
       ))}
       

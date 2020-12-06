@@ -91,7 +91,7 @@ class Upload extends React.Component {
    //update image status on Modal as image is being uploaded
    updateImageStatus = (fileName) => {
      //console.log("callback Upload image");
-     this.props.whenFileUpload(`Uploading ${fileName} to server`);
+     this.props.whenFileUpload({"item":fileName, "status":"Uploading to Server"});
    }
    
   render() {
