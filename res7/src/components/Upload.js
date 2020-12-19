@@ -13,7 +13,7 @@ class Upload extends React.Component {
 
     //change state when file is changed
     onFileChange = (event) => { 
-      console.log(event);
+      //console.log(event);
       this.setState({ selectedFile: [event.target.files] }); 
       this.setState({file: event});
     }; 
@@ -23,7 +23,7 @@ class Upload extends React.Component {
 
       let i=0;
       for(i = 0;i< this.state.selectedFile[0].length; i++){
-      console.log("ye", this.state.selectedFile[0][i]);
+      //console.log("ye", this.state.selectedFile[0][i]);
       try{
       this.uploadImage(this.state.selectedFile[0][i],i);
       }

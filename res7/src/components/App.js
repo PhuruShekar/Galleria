@@ -84,7 +84,7 @@ class App extends React.Component{
       date: picData.headers["last-modified"],
       size: picData.headers["content-length"]
     }]});
-   
+
     //reset current status to null as thumbnail is now displayed
     this.updateImageStatus();
 
@@ -124,13 +124,14 @@ class App extends React.Component{
   //update image status
   //now it checks for previous image "ie: dice vs resized-dice" and updates that object so modal now can support multiple uploads
   updateImageStatus = (newStatus) => {
+    console.log("new stat:", newStatus);
     if(newStatus){
       let tempStat = {"item":newStatus.item, "status":newStatus.status};
       if(newStatus.item.startsWith("resized-")){
        tempStat =  {"item":newStatus.item.slice(8), "status":newStatus.status};
       }
       console.log("Resize?: ", tempStat.item);
-      var index = this.state.currStatus.findIndex(x => x.item.localeCompare(newStatus.item));
+      var index = this.state.currStatus.findIndex(x => { console.log("xnitem: ",x,tempStat); return (x.item === tempStat.item)});
       console.log("index:",index);
       if(index !== -1){
         this.setState({currStatus: [
@@ -138,12 +139,17 @@ class App extends React.Component{
           Object.assign({}, this.state.currStatus[index], tempStat),
           ...this.state.currStatus.slice(index+1)
         ]
-      });
+      })
       } else {
         this.setState({currStatus: [...this.state.currStatus,tempStat] });
-      }
+        }
  
+    } else{
+      
     }
+
+    console.log("curr stat: ", this.state.currStatus);
+    
   };
 
   render() {

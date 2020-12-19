@@ -14,8 +14,8 @@ const StatusModal = (props) => {
 
   //UseEffect automatically opens/closes modal if it has a message so user doesn't have to close it if they dont want to
   useEffect(() => {
-    console.log("prop stat", props.currStatus);
-    if(!Array.isArray(props.currStatus) || !props.currStatus.length || props.currStatus.length === 0){
+    console.log("prop stat (modal)", props.currStatus);
+    if(!Array.isArray(props.currStatus) || !props.currStatus.length || props.currStatus.length === 0 || null){
       setOpen(false);
     } else {
       setOpen(true);
