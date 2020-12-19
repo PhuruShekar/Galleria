@@ -12,13 +12,25 @@ const StatusModal = (props) => {
     setOpen(false);
   }
 
+
+  const stat_done = x => x.status==='Done';
+
   //UseEffect automatically opens/closes modal if it has a message so user doesn't have to close it if they dont want to
   useEffect(() => {
-    console.log("prop stat (modal)", props.currStatus);
+    //console.log("prop stat (modal)", props.currStatus);
     if(!Array.isArray(props.currStatus) || !props.currStatus.length || props.currStatus.length === 0 || null){
       setOpen(false);
     } else {
-      setOpen(true);
+
+      if(props.currStatus.every(stat_done)){
+        setOpen(false);
+      }
+
+      else {
+        setOpen(true);
+      } 
+
+      
     }
     return () => {
       setOpen(false);
@@ -40,7 +52,7 @@ const StatusModal = (props) => {
     </Header>
     <Modal.Content className="ui container center aligned">
       {props.currStatus.map(status => (
-        <Modal.Header className="ui centered message-color">
+        <Modal.Header className="ui centered message-color" key={status.item}>
           {`${status.item}: ${status.status}`}
         </Modal.Header>
       ))}

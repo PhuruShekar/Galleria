@@ -86,7 +86,7 @@ class App extends React.Component{
     }]});
 
     //reset current status to null as thumbnail is now displayed
-    this.updateImageStatus();
+    this.updateImageStatus({"item":findKey,"status":'Done'});
 
   };
 
@@ -121,18 +121,30 @@ class App extends React.Component{
     this.getImageList();
   };
   
+
+  stat_done = x => x.status==='Done';
+
   //update image status
   //now it checks for previous image "ie: dice vs resized-dice" and updates that object so modal now can support multiple uploads
   updateImageStatus = (newStatus) => {
-    console.log("new stat:", newStatus);
+    //console.log("new stat:", newStatus);
+
+
     if(newStatus){
+
+      //first check if all statuses are "done". if so: clear currstatus state.
+      if(this.state.currStatus.every(this.stat_done)){
+        this.setState({currStatus: []});
+      }
+
+
       let tempStat = {"item":newStatus.item, "status":newStatus.status};
       if(newStatus.item.startsWith("resized-")){
        tempStat =  {"item":newStatus.item.slice(8), "status":newStatus.status};
       }
       console.log("Resize?: ", tempStat.item);
-      var index = this.state.currStatus.findIndex(x => { console.log("xnitem: ",x,tempStat); return (x.item === tempStat.item)});
-      console.log("index:",index);
+      var index = this.state.currStatus.findIndex(x => { return (x.item === tempStat.item)});
+      //console.log("index:",index);
       if(index !== -1){
         this.setState({currStatus: [
           ...this.state.currStatus.slice(0,index),
@@ -144,11 +156,9 @@ class App extends React.Component{
         this.setState({currStatus: [...this.state.currStatus,tempStat] });
         }
  
-    } else{
-      
-    }
+    } 
 
-    console.log("curr stat: ", this.state.currStatus);
+    //console.log("curr stat: ", this.state.currStatus);
     
   };
 
