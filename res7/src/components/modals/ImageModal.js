@@ -10,31 +10,23 @@ const ImageModal = (props) => {
   const [imageURL, setimageURL] = useState('about:blank');
   const [imageData, setImageData] = useState({});
 
-  //close modal
+  //close modal, clean up
   const handleClose = () => {
     props.updateImage(null);
+    setImageData({});
+    setimageURL('about:blank');
     setOpen(false);
   }
 
-  //open modal
+  //open modal, update states
   const handleOpen = () => {
     setimageURL(`${props.currImage.url}`);
     setImageData(props.currImage);
     setOpen(true);
   }
 
-  const handleDownload = () => {
- 
-    return {
-      mime: 'image',
-      fileName: imageData.key,
-      contents: imageData.url,
-
-    }
-  }
-
   useEffect(() => {
-  console.log("img props:",props)
+    //console.log("img props:",props)
     
   if(props.currImage != null){
     handleOpen();

@@ -10,6 +10,7 @@ class Navbar extends React.Component {
   render() {
 
     //console.log("navbar props",this.props);
+    //Upload component has most functionality, so callback props are passed into it
     return (
     <div className = "ui menu grid inverted">
       <div className="three column row header item">

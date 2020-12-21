@@ -11,6 +11,7 @@ class Upload extends React.Component {
   //file: actual file uploaded event
   state = { selectedFile: null, file: null }; 
 
+    //handler for errors, callback error 
     foundError = (oops) => {
       this.props.errorStatus(oops);
     }

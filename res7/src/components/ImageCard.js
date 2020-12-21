@@ -21,6 +21,7 @@ class ImageCard extends React.Component {
     this.setState({ spans: spans });
   };
 
+  //sends back selected image state so it can be displayed on a modal
   selectedImage = () => {
     console.log("selected:", this.props.image);
     this.props.updateImage(this.props.image);

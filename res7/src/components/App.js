@@ -133,7 +133,7 @@ class App extends React.Component{
     this.setState({errorStatus: ''});
   }
 
-
+  //handles upload errors, updates state and pops open modal
   uploadError = (error) => {
     this.setState({errorStatus: error});
   }
