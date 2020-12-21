@@ -3,7 +3,9 @@ import axios from 'axios';
 import aws from '../apis/aws';
 import ImageList from './ImageList';
 import Navbar from './Navbar';
-import StatusModal from './StatusModal';
+import StatusModal from './modals/StatusModal';
+import ErrorModal from './modals/ErrorModal';
+import ImageModal from './modals/ImageModal'
 
 class App extends React.Component{
 
@@ -11,7 +13,7 @@ class App extends React.Component{
   //images: stores list of images and their metadata
   //itemNames: has list of image names to retrieve
   //currStatus: string with status of image as it is being uploaded
-  state = { images: [], itemNames: [], currStatus:[]};
+  state = { images: [], itemNames: [], currStatus:[], errorStatus:'', selectedImage: null };
 
   //take XML data of image list and get image data
   getImagesFromXML = (xmlData) => {
@@ -39,6 +41,7 @@ class App extends React.Component{
       //if image hasn't been uploaded and created into a thumbnail yet
       //keep trying every second
       setTimeout(this.fetchImage(presignedURL), 1000);
+      //this.setState({errorStatus: `Error Fetching Image \n ${err}`});
       console.log("error fetching image:", err);
     })
   };
@@ -46,7 +49,7 @@ class App extends React.Component{
 
   //get presigned URL for selected image
   fetchImageURL = (imageName) => {
-    console.log("fetch image: ", imageName)
+    //console.log("fetch image: ", imageName)
 
     //add image names to state to get later
     this.setState({itemNames: [...this.state.itemNames,imageName]});
@@ -62,6 +65,7 @@ class App extends React.Component{
       this.fetchImage(prsURL.data);
     })
     .catch(error => {
+      this.setState({errorStatus: `Error creating Presigned URL \n ${error}`});
       console.log("Error making Presigned URL to fetch: ",error);
     })
   }
@@ -75,9 +79,11 @@ class App extends React.Component{
     for(let item of this.state.itemNames){
         if(picData.config.url.includes(item)){
           findKey = item;
+          findKey = findKey.substring(8);
         }
     }
     //set state with image key/name
+    //has URL, last modified and image size in bytes
     this.setState({images: [...this.state.images,{
       key: findKey,
       url: picData.config.url,
@@ -99,7 +105,7 @@ class App extends React.Component{
      .then( obj => {
         this.getImagesFromXML(obj.data);
       //console.log(obj.data);
-      })
+      }) 
     })
   };
 
@@ -112,6 +118,7 @@ class App extends React.Component{
 
       this.fetchImageURL(e);
     } catch(error) {
+      this.setState({errorStatus: `Error downloading image\n ${error}`});
       console.log("fetchImage Upload err:", error);
     }
   }
@@ -121,6 +128,15 @@ class App extends React.Component{
     this.getImageList();
   };
   
+  //callback function to reset error status when we close error modal if an error occurs.
+  resetError = () => {
+    this.setState({errorStatus: ''});
+  }
+
+   //callback function to reset error status when we close error modal if an error occurs.
+   updateImage = (image) => {
+    this.setState({selectedImage: image});
+  }
 
   stat_done = x => x.status==='Done';
 
@@ -142,7 +158,7 @@ class App extends React.Component{
       if(newStatus.item.startsWith("resized-")){
        tempStat =  {"item":newStatus.item.slice(8), "status":newStatus.status};
       }
-      console.log("Resize?: ", tempStat.item);
+      //console.log("Resize?: ", tempStat.item);
       var index = this.state.currStatus.findIndex(x => { return (x.item === tempStat.item)});
       //console.log("index:",index);
       if(index !== -1){
@@ -167,8 +183,10 @@ class App extends React.Component{
       <div className="ui inverted">
         <Navbar onUpload={this.onUpload} whenFileUpload={this.updateImageStatus}/>
         <div className="ui container">
-        <ImageList images={this.state.images}/>
+        <ImageList images={this.state.images} updateImage = {this.updateImage} />
         <StatusModal currStatus={this.state.currStatus}/>
+        <ErrorModal currError = {this.state.errorStatus} resetError = {this.resetError} />
+        <ImageModal currImage = {this.state.selectedImage} updateImage = {this.updateImage} />
         </div>
       </div>
     )

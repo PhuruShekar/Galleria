@@ -12,3 +12,26 @@
 .message-color {
   color: white !important;
 }
+
+.noClasses {
+  margin: 0 !important;
+  text-decoration: none !important;
+  color: #21ba45 !important;
+}
+
+.image-header {
+  background-color: #333333 !important;
+}
+
+.image-body {
+  color: #ff851b !important;
+}
+
+.data {
+  padding-top: 20px;
+  color: black;
+}
+
+.image-footer {
+  background-color: #333333 !important;
+}

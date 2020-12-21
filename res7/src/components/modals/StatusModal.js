@@ -1,17 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import { Button, Header, Modal, Icon } from 'semantic-ui-react';
 import Loader from 'react-loader-spinner';
-import "../components/css/styles.css";
+import "../css/styles.css";
 
 //Modal component to display image status while its uploaded
 const StatusModal = (props) => {
   //set if modal open or closed
   const [open, setOpen] = useState(false);
 
+  //close modal
   const handleClose = () => {
     setOpen(false);
   }
 
+  //open modal
+  const handleOpen = () => {
+    setOpen(true);
+  }
 
   const stat_done = x => x.status==='Done';
 
@@ -19,15 +24,15 @@ const StatusModal = (props) => {
   useEffect(() => {
     //console.log("prop stat (modal)", props.currStatus);
     if(!Array.isArray(props.currStatus) || !props.currStatus.length || props.currStatus.length === 0 || null){
-      setOpen(false);
+      handleClose();
     } else {
 
       if(props.currStatus.every(stat_done)){
-        setOpen(false);
+        handleClose();
       }
 
       else {
-        setOpen(true);
+        handleOpen();
       } 
 
       
@@ -41,8 +46,8 @@ const StatusModal = (props) => {
   return (
     <Modal
     basic
-    onClose={() => setOpen(false)}
-    onOpen={() => setOpen(true)}
+    onClose={() => handleClose()}
+    onOpen={() => handleOpen()}
     open={open}
     size='mini'
   >

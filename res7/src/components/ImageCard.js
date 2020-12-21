@@ -21,11 +21,16 @@ class ImageCard extends React.Component {
     this.setState({ spans: spans });
   };
 
+  selectedImage = () => {
+    console.log("selected:", this.props.image);
+    this.props.updateImage(this.props.image);
+  };
+
   render() {
     const { key, url } = this.props.image;
     return (
       <div style={{ gridRowEnd: `span ${this.state.spans}` }}>
-        <img ref={this.imageRef} alt={key} key={key} src={url} />
+        <img onClick={this.selectedImage} ref={this.imageRef} alt={key} key={key} src={url} />
       </div>
     );
   }
