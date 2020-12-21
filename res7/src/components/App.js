@@ -133,6 +133,11 @@ class App extends React.Component{
     this.setState({errorStatus: ''});
   }
 
+
+  uploadError = (error) => {
+    this.setState({errorStatus: error});
+  }
+  
    //callback function to reset error status when we close error modal if an error occurs.
    updateImage = (image) => {
     this.setState({selectedImage: image});
@@ -181,7 +186,7 @@ class App extends React.Component{
   render() {
     return(
       <div className="ui inverted">
-        <Navbar onUpload={this.onUpload} whenFileUpload={this.updateImageStatus}/>
+        <Navbar errorStatus={this.uploadError} onUpload={this.onUpload} whenFileUpload={this.updateImageStatus}/>
         <div className="ui container">
         <ImageList images={this.state.images} updateImage = {this.updateImage} />
         <StatusModal currStatus={this.state.currStatus}/>

@@ -11,6 +11,10 @@ class Upload extends React.Component {
   //file: actual file uploaded event
   state = { selectedFile: null, file: null }; 
 
+    foundError = (oops) => {
+      this.props.errorStatus(oops);
+    }
+
     //change state when file is changed
     onFileChange = (event) => { 
       //console.log(event);
@@ -22,16 +26,16 @@ class Upload extends React.Component {
     onFileUpload = () => { 
 
       let i=0;
-      for(i = 0;i< this.state.selectedFile[0].length; i++){
-      //console.log("ye", this.state.selectedFile[0][i]);
       try{
-      this.uploadImage(this.state.selectedFile[0][i],i);
+        for(i = 0;i< this.state.selectedFile[0].length; i++){
+          //console.log("ye", this.state.selectedFile[0][i]);
+          this.uploadImage(this.state.selectedFile[0][i],i);
+        }
       }
       catch(error) {
+        this.foundError(`No Images Selected`);
         console.log("No image selected",error);
-
       }
-    }
     }; 
 
 
@@ -69,11 +73,15 @@ class Upload extends React.Component {
           } 
         })
         .catch(error =>{
+          this.foundError(`Error Uploading Image`);
           console.log("Error image upload:",error);
         })
         
       })
-      .catch(error => console.log("Error getting Presigned URL:", error));
+      .catch(error => {
+        this.foundError(`Error getting Presigned URL.`);
+        console.log("Error getting Presigned URL:", error)
+      });
 
       
     };

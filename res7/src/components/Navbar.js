@@ -17,7 +17,7 @@ class Navbar extends React.Component {
           Galleria
         </Header>
 
-        <Upload onUpload={this.props.onUpload} whenFileUpload ={this.props.whenFileUpload} />
+        <Upload errorStatus={this.props.errorStatus} onUpload={this.props.onUpload} whenFileUpload ={this.props.whenFileUpload} />
       </div>
     </div> 
     );
