@@ -55,14 +55,15 @@ Enjoy!
   
   It's that easy!
   
+  ## Improvements from 1.0
+  1. User can upload multiple images! (this was a doozy)
+  1. Errors are shown to the user (instead of just being shown on the console)
+  1. Now you can click on an image to view its information and download it
   
   ## To Improve Upon
   1. Allow images to be sorted
   1. Clean up Upload Image Button
-  1. Make errors more clear to the User (so they don't have to check console.log)
-  1. Move thumbnail generator script to local instead of having a lambda function
   1. Make the app responsive for mobile
   1. Make the lamba functions give more error information
-  1. Allow users to click image to expand and give Image information in a modal and allow them to 
-  download thumbnail
+
   
